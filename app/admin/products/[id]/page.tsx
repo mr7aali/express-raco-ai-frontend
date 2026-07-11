@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useSWR from 'swr';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createProductSchema, type CreateProductInput } from '@/lib/schemas';
-import api from '@/lib/api';
+import api, { unwrapApiArray, unwrapApiData } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,7 @@ function EditProductContent() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const { data: product, isLoading: loadingProduct } = useSWR(
+  const { data: productData, isLoading: loadingProduct } = useSWR(
     `/api/products/${productId}`,
     fetcher
   );
@@ -34,6 +34,8 @@ function EditProductContent() {
     '/api/categories',
     fetcher
   );
+  const product = unwrapApiData<any>(productData);
+  const categoryList = unwrapApiArray<any>(categories);
 
   const {
     register,
@@ -45,7 +47,7 @@ function EditProductContent() {
   });
 
   // Reset form when product loads
-  React.useEffect(() => {
+  useEffect(() => {
     if (product) {
       reset({
         name: product.name,
@@ -241,7 +243,7 @@ function EditProductContent() {
                   className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select a category</option>
-                  {categories?.map((cat: any) => (
+                  {categoryList.map((cat: any) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.name}
                     </option>

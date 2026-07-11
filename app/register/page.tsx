@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterInput } from '@/lib/schemas';
 import { useAuthStore } from '@/lib/store';
-import api from '@/lib/api';
+import api, { unwrapApiData } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/navbar';
 
@@ -43,7 +43,7 @@ export default function RegisterPage() {
         password: data.password,
       });
 
-      const { user, token } = loginResponse.data;
+      const { user, token } = unwrapApiData<{ user: any; token: string }>(loginResponse.data);
       setToken(token);
       setUser(user);
       router.push('/products');

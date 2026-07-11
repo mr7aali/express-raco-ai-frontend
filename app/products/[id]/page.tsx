@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray, unwrapApiData } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProductCard } from '@/components/product-card';
 import { StatusBadge } from '@/components/status-badge';
@@ -23,7 +23,7 @@ export default function ProductDetailsPage() {
   const addItem = useCartStore((state) => state.addItem);
   const [quantity, setQuantity] = useState(1);
 
-  const { data: product, isLoading, error } = useSWR(
+  const { data: productData, isLoading, error } = useSWR(
     `/api/products/${productId}`,
     fetcher
   );
@@ -32,6 +32,8 @@ export default function ProductDetailsPage() {
     `/api/products/${productId}/recommendations`,
     fetcher
   );
+  const product = unwrapApiData<any>(productData);
+  const recommendationList = unwrapApiArray<any>(recommendations);
 
   const handleAddToCart = () => {
     addItem(productId, quantity);
@@ -163,13 +165,13 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Recommendations */}
-          {recommendations && recommendations.length > 0 && (
+          {recommendationList.length > 0 && (
             <div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
                 Related Products
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {recommendations.map((rec: any) => (
+                {recommendationList.map((rec: any) => (
                   <ProductCard
                     key={rec.id}
                     product={rec}

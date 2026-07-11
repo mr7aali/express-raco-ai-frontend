@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray, unwrapApiData } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { useCartStore } from '@/lib/store';
@@ -27,10 +27,11 @@ function CartContent() {
     items.length > 0 ? `/api/products?limit=100` : null,
     fetcher
   );
+  const productList = unwrapApiArray<any>(products);
 
   const cartItems = items
     .map((item) => {
-      const product = products?.find((p: any) => p.id === item.productId);
+      const product = productList.find((p: any) => p.id === item.productId);
       return { ...item, product };
     })
     .filter((item) => item.product);
@@ -52,7 +53,8 @@ function CartContent() {
         })),
       });
 
-      const orderId = orderResponse.data.id;
+      const order = unwrapApiData<any>(orderResponse.data);
+      const orderId = order.id;
       clearCart();
       router.push(`/checkout/${orderId}`);
     } catch (err: any) {

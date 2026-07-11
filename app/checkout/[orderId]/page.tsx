@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiData } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { StatusBadge } from '@/components/status-badge';
@@ -24,10 +24,11 @@ function CheckoutContent() {
   const [error, setError] = useState('');
   const [paymentInitiated, setPaymentInitiated] = useState(false);
 
-  const { data: order, isLoading, error: orderError } = useSWR(
+  const { data: orderData, isLoading, error: orderError } = useSWR(
     `/api/orders/${orderId}`,
     fetcher
   );
+  const order = unwrapApiData<any>(orderData);
 
   const handleInitiatePayment = async () => {
     try {
@@ -39,16 +40,18 @@ function CheckoutContent() {
         provider,
       });
 
+      const payment = unwrapApiData<any>(response.data);
+
       if (provider === 'STRIPE') {
         // For Stripe, redirect to Stripe Checkout
-        if (response.data.clientSecret) {
+        if (payment.clientSecret) {
           // Redirect to payment confirmation page with clientSecret
-          router.push(`/payment-confirm?clientSecret=${response.data.clientSecret}&orderId=${orderId}`);
+          router.push(`/payment-confirm?clientSecret=${payment.clientSecret}&orderId=${orderId}`);
         }
       } else if (provider === 'BKASH') {
         // For bKash, redirect to their URL
-        if (response.data.redirectUrl) {
-          window.location.href = response.data.redirectUrl;
+        if (payment.redirectUrl) {
+          window.location.href = payment.redirectUrl;
         }
       }
 

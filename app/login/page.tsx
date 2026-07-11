@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginInput } from '@/lib/schemas';
 import { useAuthStore } from '@/lib/store';
-import api from '@/lib/api';
+import api, { unwrapApiData } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/navbar';
 
@@ -31,7 +31,7 @@ export default function LoginPage() {
       setLoading(true);
 
       const response = await api.post('/api/auth/login', data);
-      const { user, token } = response.data;
+      const { user, token } = unwrapApiData<{ user: any; token: string }>(response.data);
 
       setToken(token);
       setUser(user);

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { StatusBadge } from '@/components/status-badge';
@@ -25,6 +25,7 @@ function AdminProductsContent() {
     '/api/products?limit=100',
     fetcher
   );
+  const productList = unwrapApiArray<any>(products);
 
   const handleDelete = async (productId: string) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
@@ -78,7 +79,7 @@ function AdminProductsContent() {
             </div>
           )}
 
-          {products?.length === 0 ? (
+          {productList.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 rounded-lg p-12 text-center">
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-6">
                 No products yet
@@ -114,7 +115,7 @@ function AdminProductsContent() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                    {products?.map((product: any) => (
+                    {productList.map((product: any) => (
                       <tr key={product.id} className="hover:bg-slate-50 dark:hover:bg-slate-800">
                         <td className="px-6 py-4">
                           <span className="text-slate-900 dark:text-white font-medium">

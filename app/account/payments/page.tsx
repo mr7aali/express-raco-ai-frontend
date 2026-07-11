@@ -1,7 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { StatusBadge } from '@/components/status-badge';
@@ -19,6 +19,7 @@ function PaymentsContent() {
     '/api/users/me/payments',
     fetcher
   );
+  const paymentList = unwrapApiArray<any>(payments);
 
   if (isLoading) {
     return (
@@ -36,7 +37,7 @@ function PaymentsContent() {
     );
   }
 
-  if (payments?.length === 0) {
+  if (paymentList.length === 0) {
     return (
       <>
         <Navbar />
@@ -91,7 +92,7 @@ function PaymentsContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                  {payments?.map((payment: any) => (
+                  {paymentList.map((payment: any) => (
                     <tr key={payment.id} className="hover:bg-slate-50 dark:hover:bg-slate-800">
                       <td className="px-6 py-4">
                         <button

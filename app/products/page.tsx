@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProductCard } from '@/components/product-card';
 import { useCartStore, useAuthStore } from '@/lib/store';
@@ -53,6 +53,8 @@ export default function ProductsPage() {
   );
 
   const { data: categoriesData } = useSWR('/api/categories', fetcher);
+  const products = unwrapApiArray<Product>(productsData);
+  const categories = unwrapApiArray<Category>(categoriesData);
 
   const handleAddToCart = (productId: string) => {
     addItem(productId, 1);
@@ -90,7 +92,7 @@ export default function ProductsPage() {
               className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Categories</option>
-              {categoriesData?.map((category: Category) => (
+              {categories.map((category: Category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
@@ -127,10 +129,10 @@ export default function ProductsPage() {
           )}
 
           {/* Products Grid */}
-          {productsData && productsData.length > 0 ? (
+          {products.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                {productsData.map((product: Product) => (
+                {products.map((product: Product) => (
                   <ProductCard
                     key={product.id}
                     product={product}
@@ -151,7 +153,7 @@ export default function ProductsPage() {
                 <span className="px-4 py-2 text-slate-700 dark:text-slate-300">
                   Page {page}
                 </span>
-                {productsData.length === limit && (
+                {products.length === limit && (
                   <Button
                     variant="outline"
                     onClick={() => setPage(page + 1)}

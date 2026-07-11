@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { StatusBadge } from '@/components/status-badge';
@@ -24,6 +24,7 @@ function OrdersContent() {
     '/api/orders',
     fetcher
   );
+  const orderList = unwrapApiArray<any>(orders);
 
   const handleCancelOrder = async (orderId: string) => {
     try {
@@ -54,7 +55,7 @@ function OrdersContent() {
     );
   }
 
-  if (orders?.length === 0) {
+  if (orderList.length === 0) {
     return (
       <>
         <Navbar />
@@ -94,7 +95,7 @@ function OrdersContent() {
           )}
 
           <div className="space-y-4">
-            {orders?.map((order: any) => (
+            {orderList.map((order: any) => (
               <div
                 key={order.id}
                 className="bg-white dark:bg-slate-900 rounded-lg p-6"

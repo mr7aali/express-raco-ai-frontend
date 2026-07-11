@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,7 @@ function AdminCategoriesContent() {
     '/api/categories',
     fetcher
   );
+  const categoryList = unwrapApiArray<any>(categories);
 
   const handleDelete = async (categoryId: string) => {
     if (!confirm('Are you sure you want to delete this category?')) return;
@@ -147,7 +148,7 @@ function AdminCategoriesContent() {
                     className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">None (Root Category)</option>
-                    {categories?.map((cat: any) => (
+                    {categoryList.map((cat: any) => (
                       <option key={cat.id} value={cat.id}>
                         {cat.name}
                       </option>
@@ -171,7 +172,7 @@ function AdminCategoriesContent() {
             </div>
           )}
 
-          {categories?.length === 0 ? (
+          {categoryList.length === 0 ? (
             <div className="bg-white dark:bg-slate-900 rounded-lg p-12 text-center">
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-6">
                 No categories yet
@@ -199,7 +200,7 @@ function AdminCategoriesContent() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-                    {categories?.map((category: any) => (
+                    {categoryList.map((category: any) => (
                       <tr key={category.id} className="hover:bg-slate-50 dark:hover:bg-slate-800">
                         <td className="px-6 py-4">
                           <span className="text-slate-900 dark:text-white font-medium">

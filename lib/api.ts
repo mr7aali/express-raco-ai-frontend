@@ -10,6 +10,23 @@ const api = axios.create({
   },
 });
 
+type ApiEnvelope<T> = {
+  data?: T;
+};
+
+export function unwrapApiData<T>(payload: T | ApiEnvelope<T>): T {
+  if (payload && typeof payload === 'object' && 'data' in payload) {
+    return (payload as ApiEnvelope<T>).data as T;
+  }
+
+  return payload as T;
+}
+
+export function unwrapApiArray<T>(payload: unknown): T[] {
+  const data = unwrapApiData<unknown>(payload);
+  return Array.isArray(data) ? data : [];
+}
+
 // Add token to requests
 api.interceptors.request.use((config) => {
   const token = Cookies.get('token');

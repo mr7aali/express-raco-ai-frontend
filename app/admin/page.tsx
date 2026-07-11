@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import useSWR from 'swr';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { Button } from '@/components/ui/button';
@@ -17,32 +17,35 @@ function AdminDashboardContent() {
   const { data: products } = useSWR('/api/products?limit=1', fetcher);
   const { data: categories } = useSWR('/api/categories', fetcher);
   const { data: orders } = useSWR('/api/orders', fetcher);
+  const productList = unwrapApiArray<any>(products);
+  const categoryList = unwrapApiArray<any>(categories);
+  const orderList = unwrapApiArray<any>(orders);
 
   const stats = [
     {
       label: 'Total Products',
-      value: products?.length || 0,
+      value: productList.length,
       icon: Package,
       color: 'bg-blue-100 dark:bg-blue-950 text-blue-600',
       href: '/admin/products',
     },
     {
       label: 'Total Categories',
-      value: categories?.length || 0,
+      value: categoryList.length,
       icon: Tags,
       color: 'bg-green-100 dark:bg-green-950 text-green-600',
       href: '/admin/categories',
     },
     {
       label: 'Total Orders',
-      value: orders?.length || 0,
+      value: orderList.length,
       icon: ShoppingBag,
       color: 'bg-purple-100 dark:bg-purple-950 text-purple-600',
       href: '/account/orders',
     },
     {
       label: 'Payments',
-      value: orders?.[0]?.payments?.length || 0,
+      value: orderList[0]?.payments?.length || 0,
       icon: CreditCard,
       color: 'bg-orange-100 dark:bg-orange-950 text-orange-600',
       href: '/account/payments',

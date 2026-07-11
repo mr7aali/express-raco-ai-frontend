@@ -2,7 +2,7 @@
 
 import useSWR from 'swr';
 import Link from 'next/link';
-import api from '@/lib/api';
+import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
@@ -20,13 +20,14 @@ interface Category {
 }
 
 export default function CategoriesPage() {
-  const { data: categories, isLoading } = useSWR('/api/categories', fetcher);
+  const { data: categoriesData, isLoading } = useSWR('/api/categories', fetcher);
+  const categories = unwrapApiArray<Category>(categoriesData);
 
   // Build category hierarchy
-  const rootCategories = categories?.filter((cat: Category) => !cat.parentId) || [];
+  const rootCategories = categories.filter((cat: Category) => !cat.parentId);
   const childrenMap: { [key: string]: Category[] } = {};
 
-  categories?.forEach((cat: Category) => {
+  categories.forEach((cat: Category) => {
     if (cat.parentId) {
       if (!childrenMap[cat.parentId]) {
         childrenMap[cat.parentId] = [];
