@@ -1,26 +1,33 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    @media (prefers-color-scheme: light) {
-      .background { fill: black; }
-      .foreground { fill: white; }
-    }
-    @media (prefers-color-scheme: dark) {
-      .background { fill: white; }
-      .foreground { fill: black; }
-    }
-  </style>
-  <g clip-path="url(#clip0_7960_43945)">
-    <rect class="background" width="180" height="180" rx="37" />
-    <g style="transform: scale(95%); transform-origin: center">
-      <path class="foreground"
-        d="M101.141 53H136.632C151.023 53 162.689 64.6662 162.689 79.0573V112.904H148.112V79.0573C148.112 78.7105 148.098 78.3662 148.072 78.0251L112.581 112.898C112.701 112.902 112.821 112.904 112.941 112.904H148.112V126.672H112.941C98.5504 126.672 86.5638 114.891 86.5638 100.5V66.7434H101.141V100.5C101.141 101.15 101.191 101.792 101.289 102.422L137.56 66.7816C137.255 66.7563 136.945 66.7434 136.632 66.7434H101.141V53Z" />
-      <path class="foreground"
-        d="M65.2926 124.136L14 66.7372H34.6355L64.7495 100.436V66.7372H80.1365V118.47C80.1365 126.278 70.4953 129.958 65.2926 124.136Z" />
-    </g>
-  </g>
+  <title>ShopHub</title>
   <defs>
-    <clipPath id="clip0_7960_43945">
-      <rect width="180" height="180" fill="white" />
-    </clipPath>
+    <linearGradient id="bg" x1="24" y1="18" x2="154" y2="164" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" />
+      <stop offset="0.58" stop-color="#0F766E" />
+      <stop offset="1" stop-color="#16A34A" />
+    </linearGradient>
+    <linearGradient id="bag" x1="55" y1="50" x2="121" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" />
+      <stop offset="1" stop-color="#DFF7FF" />
+    </linearGradient>
+    <filter id="shadow" x="30" y="32" width="121" height="124" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#052E2B" flood-opacity="0.26" />
+    </filter>
   </defs>
+
+  <rect width="180" height="180" rx="40" fill="url(#bg)" />
+  <path d="M31 132C57 158 116 166 151 113C158 102 153 94 142 99C111 115 92 112 59 98C35 88 15 116 31 132Z" fill="#A7F3D0" opacity="0.23" />
+  <path d="M26 45C45 21 82 18 100 39C116 58 101 82 75 79C44 76 12 63 26 45Z" fill="#DBEAFE" opacity="0.18" />
+
+  <g filter="url(#shadow)">
+    <path d="M52.5 73.5C53.3 64.7 60.7 58 69.6 58H110.4C119.3 58 126.7 64.7 127.5 73.5L132.2 125.7C133.1 135.8 125.1 144.5 114.9 144.5H65.1C54.9 144.5 46.9 135.8 47.8 125.7L52.5 73.5Z" fill="url(#bag)" />
+    <path d="M52.5 73.5C53.3 64.7 60.7 58 69.6 58H110.4C119.3 58 126.7 64.7 127.5 73.5L132.2 125.7C133.1 135.8 125.1 144.5 114.9 144.5H65.1C54.9 144.5 46.9 135.8 47.8 125.7L52.5 73.5Z" stroke="#E0F2FE" stroke-width="4" />
+  </g>
+
+  <path d="M70 73V64.8C70 53.8 78.9 45 90 45C101.1 45 110 53.8 110 64.8V73" stroke="#0F766E" stroke-width="8" stroke-linecap="round" />
+  <path d="M71 102.5L84.2 115.4L110 88.5" stroke="#2563EB" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+
+  <circle cx="132" cy="54" r="17" fill="#F8FAFC" />
+  <path d="M132 42L135.2 50.8L144 54L135.2 57.2L132 66L128.8 57.2L120 54L128.8 50.8L132 42Z" fill="#16A34A" />
+  <circle cx="49" cy="51" r="7" fill="#A7F3D0" opacity="0.9" />
 </svg>
