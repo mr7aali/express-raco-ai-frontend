@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import useSWR from 'swr';
 import api, { unwrapApiArray } from '@/lib/api';
 import { Navbar } from '@/components/navbar';
 import { ProtectedRoute } from '@/components/protected-route';
 import { Button } from '@/components/ui/button';
-import { Edit, Trash2, AlertCircle, Plus } from 'lucide-react';
+import { Trash2, AlertCircle, Plus } from 'lucide-react';
 
 async function fetcher(url: string) {
   const res = await api.get(url);

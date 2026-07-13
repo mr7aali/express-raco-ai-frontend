@@ -34,13 +34,11 @@ async function confirmPaymentOnBackend(transactionId: string) {
 }
 
 function StripePaymentForm({
-  clientSecret,
   orderId,
   transactionId,
   onStatusChange,
   onError,
 }: {
-  clientSecret: string;
   orderId: string;
   transactionId: string;
   onStatusChange: (status: PaymentStatus) => void;
@@ -168,8 +166,6 @@ function PaymentConfirmContent() {
     if (transactionId) {
       handleCheckPayment();
     }
-    // transactionId is derived from the URL and only changes once after mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactionId]);
 
   const isSuccess = status === 'SUCCESS';
@@ -237,7 +233,6 @@ function PaymentConfirmContent() {
               <div className="mb-8">
                 <Elements stripe={stripePromise} options={elementsOptions}>
                   <StripePaymentForm
-                    clientSecret={clientSecret}
                     orderId={orderId}
                     transactionId={transactionId}
                     onStatusChange={setStatus}

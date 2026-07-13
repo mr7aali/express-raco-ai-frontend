@@ -1,14 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store';
 import { Navbar } from '@/components/navbar';
 import { Button } from '@/components/ui/button';
 import { ShoppingBag, Zap, Shield, Truck } from 'lucide-react';
 
 export default function Home() {
-  const router = useRouter();
   const { user } = useAuthStore();
 
   return (

@@ -21,7 +21,7 @@ export const createProductSchema = z.object({
   description: z.string().optional(),
   price: z.number().positive('Price must be positive'),
   stock: z.number().int().nonnegative('Stock must be non-negative'),
-  status: z.enum(['ACTIVE', 'INACTIVE']).default('ACTIVE'),
+  status: z.enum(['ACTIVE', 'INACTIVE']),
   categoryId: z.string().uuid('Invalid category'),
 });
 

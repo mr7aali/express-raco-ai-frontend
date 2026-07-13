@@ -32,7 +32,7 @@ interface CartStore {
   clearCart: () => void;
 }
 
-export const useAuthStore = create<AuthStore>(
+export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
       user: null,
@@ -53,7 +53,7 @@ export const useAuthStore = create<AuthStore>(
   )
 );
 
-export const useCartStore = create<CartStore>(
+export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       items: [],

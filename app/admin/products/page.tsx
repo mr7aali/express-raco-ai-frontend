@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import useSWR from 'swr';
 import api, { unwrapApiArray } from '@/lib/api';
@@ -17,7 +16,6 @@ async function fetcher(url: string) {
 }
 
 function AdminProductsContent() {
-  const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState('');
 
